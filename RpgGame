@@ -2,9 +2,9 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args){
-        Wizard wizard = new Wizard("Merlin",100, 10,5);
-        Warrior warrior = new Warrior("Ragnar",100,7,10);
-        Archer archer = new Archer("Velizar",100,5,3);
+        Wizard wizard = new Wizard("Merlin",100, 10,2);
+        Warrior warrior = new Warrior("Ragnar",100,7,3);
+        Archer archer = new Archer("Velizar",100,5,1);
         Scanner scan = new Scanner(System.in);
         System.out.println(wizard.getName() + "'s health: " + wizard.getHealth());
         System.out.println(warrior.getName()+"'s health: " + warrior.getHealth());
