@@ -1,0 +1,54 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Random;
+public class Main {
+
+    public static Random rand = new Random();
+    public static int a = rand.nextInt(101);
+    public static void main(String[] args) {
+        JFrame frame = new JFrame();
+        frame.setSize(500, 500);
+        frame.setLayout(new GridLayout(4, 1));
+        frame.setVisible(true);
+        JPanel panel1 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JLabel label = new JLabel("Welcome to the guessing game!");
+        label.setFont(new Font("Arial",Font.BOLD, 32 ));
+        panel1.add(label);
+        JPanel panel2 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JTextField number=new JTextField(10);
+        number.setSize(600, 60);
+        panel2.add(number);
+        JPanel panel3 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JButton guess = new JButton("Guess");
+        guess.setSize(200, 200);
+        panel3.add(guess);
+        panel2.add(guess);
+        frame.add(panel1);
+        frame.add(panel2);
+        JPanel panel4 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JLabel result = new JLabel();
+        result.setFont(new Font("Arial",Font.BOLD, 24 ));
+
+        panel4.add(result);
+        frame.add(panel4);
+        frame.pack();
+        guess.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if(number.getText().equalsIgnoreCase("quit")) {
+                    System.exit(0);
+                }else{
+                    int c = Integer.parseInt(number.getText());
+                    if (c > a) {
+                        result.setText("Incorrect! Guess a lower number!");
+                    } else if (c < a) {
+                        result.setText("Incorrect!Guess a higher number!");
+                    } else {
+                        result.setText("Correct! You won!");
+                    }
+                }
+            }
+        });
+    }
+}
