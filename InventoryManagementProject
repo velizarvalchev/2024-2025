@@ -1,0 +1,188 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Random;
+public class Main {
+
+    public static Random rand = new Random();
+    public static int a = rand.nextInt(101);
+    public static void main(String[] args) {
+        //frame
+        JFrame frame = new JFrame();
+        frame.setSize(500, 500);
+        frame.setLayout(new GridLayout(3, 3));
+        frame.setVisible(true);
+        //nameTextField
+        JPanel panel1 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JTextField name = new JTextField(16);
+        name.setFont(new Font("Arial",Font.BOLD, 32 ));
+        JLabel nameLabel = new JLabel("Name: ");
+        nameLabel.setFont(new Font("Arial",Font.BOLD, 48 ));
+        panel1.add(nameLabel);
+        panel1.add(name);
+        //priceTextField
+        JPanel panel2 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JTextField price=new JTextField(16);
+        price.setFont(new Font("Arial",Font.BOLD, 32 ));
+        JLabel priceLabel = new JLabel("Price: ");
+        priceLabel.setFont(new Font("Arial",Font.BOLD, 48 ));
+        panel2.add(priceLabel);
+        panel2.add(price);
+        //quantityTextField
+        JPanel panel3 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JTextField quantity = new JTextField(16);
+        quantity.setFont(new Font("Arial",Font.BOLD, 32 ));
+        JLabel quantityLabel = new JLabel("Quantity: ");
+        quantityLabel.setFont(new Font("Arial",Font.BOLD, 48 ));
+        panel3.add(quantityLabel);
+        panel3.add(quantity);
+        frame.add(panel1);
+        frame.add(panel2);
+        frame.add(panel3);
+        //AddProduct button
+        JPanel panel4 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JButton addProduct = new JButton("Add Product");
+        addProduct.setFont(new Font("Arial",Font.BOLD, 32 ));
+        panel4.add(addProduct);
+        //UpdateProduct button
+        JPanel panel5 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JButton updateProduct = new JButton("Update Product");
+        updateProduct.setFont(new Font("Arial",Font.BOLD, 32 ));
+        panel5.add(updateProduct);
+        //DisplayProducts button
+        JPanel panel6 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JButton displayProducts = new JButton("Display Products");
+        displayProducts.setFont(new Font("Arial",Font.BOLD, 32 ));
+        panel6.add(displayProducts);
+        //Products counter
+        JPanel panel7 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JLabel numberOfProducts = new JLabel("Number of Products: ");
+        JLabel counter1 = new JLabel("0");
+        numberOfProducts.setFont(new Font("Arial",Font.BOLD, 32 ));
+        counter1.setFont(new Font("Arial",Font.BOLD, 32 ));
+        panel7.add(numberOfProducts);
+        panel7.add(counter1);
+        //Messages TextArea
+        JPanel panel8 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JTextArea result = new JTextArea();
+        result.setFont(new Font("Arial",Font.BOLD, 32 ));
+
+        panel8.add(result);
+        frame.add(panel4);
+        frame.add(panel5);
+        frame.add(panel6);
+        frame.add(panel7);
+        frame.add(panel8);
+        Product[] products=new Product[3];
+        Inventory prods = new Inventory(products);
+        addProduct.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                result.setText("");
+                if(name.getText().isEmpty()||price.getText().isEmpty()||quantity.getText().isEmpty()) {
+                    result.setText("All fields must be filled!");
+                }
+                if(Double.parseDouble(price.getText())<0||Integer.parseInt(quantity.getText())<0) {
+                    result.setText("Price and quantity cannot be negative!");
+                }else if (Integer.parseInt(counter1.getText()) < 3) {
+                        Product a1 = new Product(name.getText(), Double.parseDouble(price.getText()), Integer.parseInt(quantity.getText()));
+                        prods.addProduct(a1);
+                        counter1.setText(String.valueOf(Integer.parseInt(counter1.getText()) + 1));
+                    } else {
+                        result.setText("You can add a maximum of 3 products!");
+                    }
+            }
+        });
+        updateProduct.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                result.setText("");
+                if(name.getText().isEmpty()||price.getText().isEmpty()||quantity.getText().isEmpty()) {
+                    result.setText("All fields must be filled!");
+                }
+                if(Double.parseDouble(price.getText())<0||Integer.parseInt(quantity.getText())<0) {
+                    result.setText("Price and quantity cannot be negative!");
+                }else if (prods.updatedProductExists(name.getText())) {
+                        prods.updateProduct(name.getText(), Double.parseDouble(price.getText()), Integer.parseInt(quantity.getText()));
+                    } else {
+                        result.setText("Product does not exist!");
+                    }
+            }
+        });
+        displayProducts.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if(products[0].displayDetails().isEmpty()){
+                    result.setText("No Products Found");
+                }else {
+                    result.setText(null);
+                    for (int i = 0; i < products.length; i++) {
+                        if(products[i]!=null) {
+                            result.setText(result.getText() + "\n" + products[i].displayDetails());
+                        }
+                    }
+                }
+            }
+        });
+    }
+}
+class Product{
+    String name;
+    Double price;
+    int quantity;
+    public Product(String name, Double price, int quantity) {
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+    }
+    public String getName() {
+        return name;
+    }
+    public Double getPrice() {
+        return price;
+    }
+    public int getQuantity() {
+        return quantity;
+    }
+    public void setPrice(Double price1) {
+        price = price1;
+    }
+    public void setQuantity(int quantity1) {
+        quantity = quantity1;
+    }
+    public String displayDetails(){
+        return "Name: "+name+" Price: "+price+" Quantity: "+quantity;
+    }
+}
+class Inventory{
+    Product[] products;
+    public Inventory(Product[] products){
+        this.products = products;
+    }
+    int counter = 0;
+    public void addProduct(Product product){
+        if(counter<3){
+            products[counter] = product;
+            counter++;
+        }
+    }
+    public void updateProduct(String name1, Double price1, int quantity1){
+        for(int i=0;i<counter;i++){
+            if(products[i].getName().equals(name1)) {
+                products[i].setPrice(price1);
+                products[i].setQuantity(quantity1);
+            }
+        }
+    }
+    public boolean updatedProductExists(String name1){
+        for(int i=0;i<counter;i++){
+            if(products[i].getName().equals(name1)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public void displayProducts(){
+        for(int i=0;i<counter;i++){
+            products[i].displayDetails();
+        }
+    }
+}
