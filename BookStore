@@ -1,0 +1,105 @@
+import java.util.Scanner;
+public class Main {
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        String[] titles = new String[]{"Fourth Wing", "The Woven Kingdom", "One Dark Window", "The Silent Patient", "Mr. Wrong Number"};
+        double[] prices = new double[]{20.00, 125.50, 73.20 , 38.90, 45.00};
+        int[] quantity = new int[]{15,10,20, 30, 50};
+        while (true) {
+            System.out.println("Available Items:");
+            System.out.println("Name          Price        Quantity");
+            Display(titles, prices, quantity);
+            System.out.println("Enter the name of the book you want to search for:");
+            String a = scan.nextLine();
+            int i=0;
+            boolean found = false;
+            for(String b: titles){
+                if(a.equalsIgnoreCase(b)){
+                    System.out.println("The book is available! Price: "+ prices[i] + " Quantity: "+ quantity[i] );
+                    found = true;
+                    break;
+                }
+                i++;
+            }
+            if(!found){
+                System.out.println("The book is not available! ");
+            }
+            System.out.println("Enter the code(index) of the book you want to purchase (or -1 to exit): ");
+            int code = scan.nextInt();
+            switch (code) {
+                case -1:
+                    System.exit(0);
+                    break;
+                case 0 :
+                    System.out.println("Selected item: " + titles[code]);
+                    System.out.println("Insert money (in dollars): $");
+                    double input = scan.nextDouble();
+                    if(input > prices[code]){
+                        System.out.println("Dispensing " + titles[code]);
+                        System.out.println("Change: " + (input - prices[code])+"\n");
+                        quantity[code]--;
+                    }else{
+                        System.out.println("Insufficient funds! ");
+                    }
+                    break;
+                case 1:
+                    System.out.println("Selected item: " + titles[code]);
+                    System.out.println("Insert money (in dollars): $");
+                    double input1 = scan.nextDouble();
+                    if(input1 > prices[code]){
+                        System.out.println("Dispensing " + titles[code]);
+                        System.out.println("Change: " + (input1 - prices[code])+"\n");
+                        quantity[code]--;
+                    }else{
+                        System.out.println("Insufficient funds! ");
+                    }
+                    break;
+                case 2:
+                    System.out.println("Selected item: " + titles[code]);
+                    System.out.println("Insert money (in dollars): $");
+                    double input2 = scan.nextDouble();
+                    if(input2 > prices[code]){
+                        System.out.println("Dispensing " + titles[code]);
+                        System.out.println("Change: " + (input2 - prices[code])+"\n");
+                        quantity[code]--;
+                    }else{
+                        System.out.println("Insufficient funds! ");
+                    }
+                    break;
+                case 3:
+                    System.out.println("Selected item: " + titles[code]);
+                    System.out.println("Insert money (in dollars): $");
+                    double input3 = scan.nextDouble();
+                    if(input3 > prices[code]){
+                        System.out.println("Dispensing " + titles[code]);
+                        System.out.println("Change: " + (input3 - prices[code])+"\n");
+                        quantity[code]--;
+                    }else{
+                        System.out.println("Insufficient funds! ");
+                    }
+                    break;
+                case 4:
+                    System.out.println("Selected item: " + titles[code]);
+                    System.out.println("Insert money (in dollars): $");
+                    double input4 = scan.nextDouble();
+                    if(input4 > prices[code]){
+                        System.out.println("Dispensing " + titles[code]);
+                        System.out.println("Change: " + (input4 - prices[code])+"\n");
+                        quantity[code]--;
+                    }else{
+                        System.out.println("Insufficient funds! ");
+                    }
+                    break;
+            }
+        }
+
+
+    }
+    public static void Display(String[] titles, double[] prices, int[] quantity) {
+        int i=0;
+        for (String a: titles) {
+            System.out.println(a + "   " + prices[i] + "        " + quantity[i]);
+            i++;
+        }
+    }
+}
