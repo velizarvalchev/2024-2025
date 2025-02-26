@@ -39,7 +39,7 @@ public class Library {
         String borrowed = scanner.nextLine();
         boolean found = false;
         for(Book book : books){
-            if(book.title.equals(borrowed)&&book.getBorrowerName().equals("Available")){
+            if(book.title.equalsIgnoreCase(borrowed)&&book.getBorrowerName().equals("Available")){
                 found=true;
                 System.out.println("Enter your name: ");
                 String name = scanner.nextLine();
@@ -56,7 +56,7 @@ public class Library {
         String returned = scanner.nextLine();
         boolean found = false;
         for(Book book : books){
-            if(book.title.equals(returned)&&!book.getBorrowerName().equals("Available")){
+            if(book.title.equalsIgnoreCase(returned)&&!book.getBorrowerName().equals("Available")){
                 found=true;
                 book.returnBook();
                 System.out.println(returned + " has been returned!\n");
