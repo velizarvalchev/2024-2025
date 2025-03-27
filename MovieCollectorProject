@@ -1,0 +1,167 @@
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        ArrayList<Movie> movies = new ArrayList<>();
+
+        JFrame frame = new JFrame("Movie Manager");
+        frame.setSize(800, 600);
+        frame.setLayout(new GridLayout(3, 1));
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        JPanel panel1 = new JPanel(new GridLayout(2, 3));
+        JLabel titleL = new JLabel("Title: ");
+        titleL.setFont(new Font("Arial", Font.BOLD, 32));
+        panel1.add(titleL);
+        JTextField title = new JTextField(10);
+        title.setFont(new Font("Arial", Font.BOLD, 32));
+        panel1.add(title);
+
+        JLabel genre =new JLabel("Genre: ");
+        genre.setFont(new Font("Arial", Font.BOLD, 32));
+        panel1.add(genre);
+        JComboBox<String> genres = new JComboBox<>(new String[]{"Action", "Comedy", "Horror", "Drama", "Sci-Fi"});
+        genres.setFont(new Font("Arial", Font.BOLD, 32));
+        panel1.add(genres);
+
+        JButton add = new JButton("Add Movie");
+        customizeButton(add, 32);
+        panel1.add(add);
+
+        frame.add(panel1);
+
+        DefaultTableModel tableModel = new DefaultTableModel(new Object[]{"Title", "Genre"}, 0);
+        JTable table = new JTable(tableModel);
+        table.setFont(new Font("Arial", Font.BOLD, 16));
+        table.setRowHeight(30);
+        frame.add(new JScrollPane(table));
+
+        JPanel panel2 = new JPanel(new GridLayout(3, 3));
+        JButton sortT = new JButton("Sort by Title");
+        customizeButton(sortT, 32);
+        JButton sortG = new JButton("Sort by Genre");
+        customizeButton(sortG, 32);
+        JTextField search = new JTextField(10);
+        search.setFont(new Font("Arial", Font.BOLD, 32));
+        JButton searchB = new JButton("Search");
+        customizeButton(searchB, 32);
+        JButton count = new JButton("Count Movies");
+        customizeButton(count, 32);
+        JLabel countT = new JLabel("Total Movies: 0");
+        countT.setFont(new Font("Arial", Font.BOLD, 32));
+
+        panel2.add(sortT);
+        panel2.add(sortG);
+        panel2.add(search);
+        panel2.add(searchB);
+        panel2.add(count);
+        panel2.add(countT);
+        frame.add(panel2);
+
+        add.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                addMovie(title, genres,  movies,  tableModel);
+            }
+        });
+
+        sortT.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                sortByTitle(movies, tableModel);
+            }
+        });
+
+        sortG.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                sortByGenre(movies, tableModel);
+            }
+        });
+
+        searchB.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                searchMovie(search, movies, table, tableModel);
+            }
+        });
+
+        count.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                countMovies(countT, movies);
+            }
+        });
+
+
+        frame.setVisible(true);
+    }
+
+    public static void customizeButton(JButton button, int size) {
+        button.setBackground(new Color(60, 60, 60));
+        button.setForeground(Color.WHITE);
+        button.setFocusPainted(false);
+        button.setFont(new Font("Arial", Font.BOLD, size));
+    }
+
+    public static void addMovie(JTextField title, JComboBox<String> genres, ArrayList<Movie> movies, DefaultTableModel df) {
+        String title1 = title.getText().trim();
+        String genre = (String) genres.getSelectedItem();
+        if (!title1.isEmpty()) {
+            movies.add(new Movie(title1, genre));
+            df.addRow(new Object[]{title1, genre});
+            title.setText("");
+        }
+    }
+
+    public static void sortByTitle(ArrayList<Movie> movies, DefaultTableModel df) {
+        movies.sort(Comparator.comparing(Movie::getTitle));
+        updateTable(df, movies);
+    }
+
+    public static void sortByGenre(ArrayList<Movie> movies, DefaultTableModel df) {
+        movies.sort(Comparator.comparing(Movie::getGenre).thenComparing(Movie::getTitle));
+        updateTable(df, movies);
+    }
+
+    public static void searchMovie(JTextField search, ArrayList<Movie> movies, JTable table, DefaultTableModel df) {
+        String searchTitle = search.getText().trim().toLowerCase();
+        for (int i = 0; i < movies.size(); i++) {
+            if (movies.get(i).getTitle().toLowerCase().contains(searchTitle)) {
+                table.setRowSelectionInterval(i, i);
+                return;
+            }
+        }
+        search.setText("MOVIE NOT FOUND!");
+        updateTable(df, movies);
+    }
+
+    public static void countMovies(JLabel countT, ArrayList<Movie> movies) {
+        countT.setText("Total Movies: " + movies.size());
+    }
+
+    public static void updateTable(DefaultTableModel df, ArrayList<Movie> movies) {
+        df.setRowCount(0);
+        for (Movie movie : movies) {
+            df.addRow(new Object[]{movie.getTitle(), movie.getGenre()});
+        }
+    }
+}
+
+class Movie {
+    private final String title;
+    private final String genre;
+
+    public Movie(String title, String genre) {
+        this.title = title;
+        this.genre = genre;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+}
