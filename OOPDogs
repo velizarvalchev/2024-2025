@@ -1,0 +1,73 @@
+import java.util.*;
+public class OOPDogs {
+    public static void main(String[] args) {
+        List <Dogs> dogs = new ArrayList <Dogs>();
+        dogs.add(new Husky("Rex", 5));
+        dogs.add(new Poodle("Kobbie", 7));
+        dogs.add(new Husky("Bruno", 3));
+        for(Dogs d : dogs) {
+            d.getName();
+            d.makeSound();
+        }
+        for(Dogs d : dogs) {
+            d.Display();
+        }
+    }
+
+}
+class Dogs{
+    String name;
+    int age;
+    String breed;
+    String sound;
+    public Dogs(String name, int age, String breed, String sound) {
+        this.name = name;
+        this.age = age;
+        this.breed = breed;
+        this.sound = sound;
+    }
+    public void getName() {
+        System.out.println(name);
+    }
+    public int getAge(){
+        return age;
+    }
+    public String getBreed(){
+        return breed;
+    }
+    public void makeSound(){
+        System.out.println(sound);
+    }
+    public void Display(){
+        System.out.println(name);
+        System.out.println(age);
+        System.out.println(breed);
+        System.out.println(sound);
+    }
+}
+class Husky extends Dogs{
+    public Husky(String name, int age) {
+        super(name, age, "Husky", "Woof");
+    }
+    @Override
+    public void makeSound(){
+        System.out.println("The "+breed+" makes "+sound);
+    }
+    @Override
+    public void getName(){
+        System.out.println("The "+breed+" is called "+ name);
+    }
+}
+class Poodle extends Dogs{
+    public Poodle(String name, int age) {
+        super(name, age, "Husky", "Woof");
+    }
+    @Override
+    public void makeSound(){
+        System.out.println("The "+breed+" makes "+sound);
+    }
+    @Override
+    public void getName(){
+        System.out.println("The "+breed+" is called "+ name);
+    }
+}
