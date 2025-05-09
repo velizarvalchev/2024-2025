@@ -7,11 +7,11 @@ public class Main {
         String name = scan.nextLine();
         try(PrintWriter pw = new PrintWriter(name+"answers.txt")){
             for(int i=0;i<5;i++){
-                int a = (int) (Math.random()*101);
-                int b = (int) (Math.random()*101);
+                int a = (int) (Math.random()*100);
+                int b = (int) (Math.random()*100);
                 System.out.println(a+" + "+b+" = ?");
                 int answer = scan.nextInt();
-                pw.print("question 1:" +a+" + "+b+" = "+answer);
+                pw.print("question "+(i+1)+":" +a+" + "+b+" = "+answer);
                 if(answer == (a+b)){
                     pw.println(" Correct");
                 }else{
