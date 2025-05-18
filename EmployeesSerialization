@@ -1,0 +1,52 @@
+import java.io.*;
+public class Employees {
+    public static void main(String[] args) {
+        Employee a = new Employee("Anton", 18, 1);
+        Employee b = new Employee("Samuil", 17, 2);
+        Employee c = new Employee("Dani", 25, 3);
+        String path = "employees.txt";
+        try (ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(path))) {
+                os.writeObject(a);
+                os.writeObject(b);
+                os.writeObject(c);
+
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        try (ObjectInputStream is = new ObjectInputStream(new FileInputStream(path))) {
+            Employee a1 = (Employee) is.readObject();
+            Employee a2 = (Employee) is.readObject();
+            Employee a3 = (Employee) is.readObject();
+            a1.displayDetails();
+            a2.displayDetails();
+            a3.displayDetails();
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println(e);
+        }
+
+    }
+}
+class Employee implements Serializable {
+    String name;
+    int age;
+    int id;
+    public Employee(String name, int age, int id){
+        this.name = name;
+        this.age = age;
+        this.id = id;
+    }
+    String getName(){
+        return name;
+    }
+    int getAge(){
+        return age;
+    }
+    int getId(){
+        return id;
+    }
+    void displayDetails(){
+        System.out.println("Name: " + name);
+        System.out.println("Age: " + age);
+        System.out.println("ID: " + id);
+    }
+}
